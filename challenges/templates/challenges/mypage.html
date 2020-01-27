@@ -1,0 +1,53 @@
+{% extends 'challenges/base.html' %}
+
+{% block content %}
+
+<body class = "masthead bg-primary">
+    <div class = "container">
+
+        <h2 class="text-white text-center">Username: {{user.username}}</h2>
+        <h2 class="text-white text-center">Email: {{user.email}}</h2>
+        <h2 class="text-white text-center">Date of Birth: {{user.date_of_birth}}</h2>
+        <br><br><br>
+        {% if m_answer%}
+        <div class="mb-3 text-center">
+            <h4>Your Challenge Score</h4>
+            <div class="container">
+              <table class="table table-hover table-sm">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Challenge</th>
+                    <th>Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {% for ans in m_answer %}
+                  <tr>
+                    <td>{{ans.question}}</td>
+                    <td>{{ans.score}}/{{ans.question.max_score}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% if unsubmitted %}
+            <p>You haven't submitted following challenges</p>
+            {% for q in unsubmitted %}
+            <ul class="list-group">
+                <li><a href = "{% url 'challenges:detail' q.id %}" class="list-group-item active">{{q}}</a></li>
+            </ul>
+            {% endfor %}
+
+            {% else%}
+            <p class="text-success text-wrap">You Submitted All The Challenges!</p>
+            {% endif%}
+            <p>total score: {{ m_user.total_score }}</p>
+        </div>
+        {% else %}
+        <p>No Answer registered</p>
+        {% endif%}
+    </div>
+</body>
+
+{% endblock %}

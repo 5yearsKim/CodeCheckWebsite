@@ -1,0 +1,54 @@
+{% extends 'challenges/base.html' %}
+
+{% block content %}
+
+
+<body>
+    <div class="masthead">
+        <div class = "container">
+            <h1>{{ question.title }}</h1>
+            <h5 class="text-justify">{{ question.question_text }}</h5>
+            <blockquote >
+                <p >{{question.description}}</p>
+            </blockquote>
+
+
+            {% if answer.trial > 0 %}
+                 <h2>Your Code</h2>
+                <br>
+                <div class="border">
+                    {% load pygmentify %}
+                    {% pygment %}
+
+                    <pre lang="python">
+                        {{answer.answer_code}}
+                    </pre>
+                    {% endpygment %}
+                </div>
+                <br>
+                <h5>your score is {{answer.score}}/{{question.max_score}}</h5>
+            {% else %}
+                <h2>Sample Code</h2>
+                <div class="border">
+                    {% load pygmentify %}
+                    {% pygment %}
+
+                    <pre lang="python">
+                        {{question.sample_code}}
+                    </pre>
+                    {% endpygment %}
+                </div>
+
+            {% endif %}
+            <br>
+            <p class="font-italic">due date for this project is {{question.due_date}}</p>
+            <br><br>
+            <form method="GET" action="{% url 'challenges:submitpage' question.id %}">
+                <input type="submit" class="btn btn-primary" value="submit code">
+            </form>
+        </div>
+    </div>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+</body>
+{% endblock %}

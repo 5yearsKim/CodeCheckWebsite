@@ -1,0 +1,29 @@
+<p>your code:</p>
+<br>
+<p> {{question.answer_code}}</p>
+<br><br>
+
+{% if error %}
+    <p>Error has occured during running your code. test value hasn't been updated</p>
+    <br><br>
+    <p>Error Traceback:</p>
+    <br>
+    <li>{{ err_msg }}</li>
+{% else %}
+    <p>Question is successfully saved!</p>
+    <ul>
+    {% for expr in question.test_expression %}
+        <li>{{ expr }}</li>
+    {% endfor %}
+    </ul>
+    <br><br>
+    <ul>
+    {% for ans in answer %}
+        <li>{{ ans }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+
+<p><a href="admin/challenges/question/">go back</a></p>
+<!--<button type="button" onclick="location.href='admin/challenges/question/' ">회원가입</button>-->

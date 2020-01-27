@@ -1,0 +1,30 @@
+{% extends 'challenges/base.html' %}
+
+{% block content %}
+
+<head>
+    <title>Log In</title>
+</head>
+
+<body class ="masthead bg-primary">
+    <div class="container" >
+        <h1 class="text-center text-white pt-5">login</h1>
+        <div class = "row justify-content-center align-items-center" >
+            <form class = "form-group input text-white font-weight-bold" method="POST" action="{% url 'accounts:login'%}">
+                {% csrf_token %}
+                Username:
+                <br>
+                <input name="username" type="text">
+                <br>
+                Password:
+                <br>
+                <input name="password" type="password">
+                <br><br>
+                <input type="submit" class="btn btn-primary" value="log in">
+                <p class="text-warning">{{error}}</p>
+            </form>
+        </div>
+    </div>
+</body>
+
+{% endblock %}

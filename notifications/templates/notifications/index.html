@@ -1,0 +1,21 @@
+{% extends 'challenges/base.html' %}
+
+{% block content %}
+
+
+
+<body class = "masthead bg-primary">
+    <div class = "container">
+        {% if notifications %}
+        {% for notification in notifications %}
+
+        <h2><a href="{% url 'notifications:detail' notification.id %}">{{ notification.title }}</a></h2>
+            <p class="small text-right"> - {{notification.pub_date}}, by {{notification.author}} </p>
+        <hr/>
+        {% endfor %}
+        {% else %}
+        <p>No notification uploaded </p>
+        {% endif %}
+    </div>
+</body>
+{% endblock %}

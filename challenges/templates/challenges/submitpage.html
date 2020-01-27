@@ -1,0 +1,38 @@
+
+{% load static%}
+<link rel="stylesheet" type="text/css" href="{% static 'challenges/challenges.css' %}">
+<style>
+.center {
+  margin: auto;
+  width: 50%;
+  border: 3px solid black;
+  padding: 10px;
+}
+
+</style>
+
+<head>
+    <br>
+    <h1 style="text-align:center">{{question.title}}<h1>
+    <br>
+</head>
+<body>
+    <div class="methead">
+        <div class="col-md-6 col-lg-4 center">
+          <div class="portfolio-item mx-auto">
+            <div class=" d-flex justify-content-center">
+              <div class=" text-center">
+                <p style="font-size:1.5rem">trial : {{answer.trial}}</p>
+
+                {{form.media}}
+                  <form method="POST" class="post-form text-white">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="save btn btn-primary">Submit</button>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</body>

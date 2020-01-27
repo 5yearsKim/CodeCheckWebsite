@@ -1,0 +1,12 @@
+
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}. Thanks for logging in.</p>
+    <form action="{% url 'accounts:logout' %}", method="GET" >
+        <button type='submit'> log out </button>
+    </form>
+{% else %}
+    <p>Welcome, new user. Please log in.</p>
+    <form action="{% url 'accounts:login' %}", method="GET" >
+        <button type='submit'> log in </button>
+    </form>
+{% endif %}

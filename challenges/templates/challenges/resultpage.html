@@ -1,0 +1,105 @@
+{% extends 'challenges/base.html' %}
+
+{% block content %}
+
+<style>
+    .indent
+    {
+    white-space: pre;
+    }
+    .leftdiv
+    {
+    float: left;
+    width: 40%;
+    }
+    .middlediv
+    {
+    float: left;
+    width: 20%;
+    }
+    .rightdiv
+    {
+    float: left;
+    width: 20%;
+    }
+
+</style>
+
+<body class="masthead">
+    <div class="container">
+        <div>
+
+            <h2>{{question.title}}</h2>
+            <br>
+            <h5>your code:</h5>
+            <div class="border">
+                <br>
+                {% load pygmentify %}
+                {% pygment %}
+
+                <pre lang="python">
+                    {{answer.answer_code}}
+                </pre>
+                {% endpygment %}
+            </div>
+            <br><br>
+
+            <h5>Console Out:</h5><br>
+            <div class="border">
+                <div class="indent">{{m_stdout}}</div>
+            </div>
+            <br><br>
+            <hr>
+            {% if error %}
+            <div class="text-warning">
+                <h5>Error has occured while running your code.</h5>
+                <br><br>
+                <p>Error Traceback:</p>
+                <br>
+                <li>{{ err_msg }}</li>
+            </div>
+            {% else %}
+                <p>Your test result is as follow</p>
+                <div class="leftdiv">
+                    <table class="table">
+                        <th>Expression</th>
+                        {% for te in question.test_expression|slice:":3" %}
+                        <tr>
+                            <td>{{te}}</td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+                <div class="middlediv">
+                    <table class="table">
+                        <th>Your Result</th>
+                        {% for tv in answer.test_value|slice:"3" %}
+                        <tr>
+                            <td>{{tv}}</td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+                <div class="rightdiv">
+                    <table class="table">
+                        <th>Correct Answer</th>
+                        {% for tv in question.test_value|slice:"3" %}
+                        <tr>
+                            <td>{{tv}}</td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+
+
+           {% endif %}
+            <br><br><br><br><br><br><br>
+            <h4>your score : {{answer.score}}/{{question.max_score}}</h4>
+
+
+            <button class =" btn-secondary",type="button" onclick="location.href='.' ">Go Back</button>
+        </div>
+    </div>
+</body>
+
+{% endblock %}

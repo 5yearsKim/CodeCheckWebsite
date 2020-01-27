@@ -1,0 +1,22 @@
+{% extends 'challenges/base.html' %}
+
+{% block content %}
+
+
+
+<body class = "masthead bg-primary">
+    <div class = "container">
+        {% if question_list %}
+        {% for question in question_list %}
+
+        <h1><a href="{% url 'challenges:detail' question.id %}">{{ question.title }}</a></h1>
+        <p class="small text-right"> ~ {{question.due_date}} </p>
+        <span>{{question.question_text}}</span>
+        <hr/>
+        {% endfor %}
+        {% else %}
+        <p>No question is available </p>
+        {% endif %}
+    </div>
+</body>
+{% endblock %}
