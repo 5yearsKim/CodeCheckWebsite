@@ -29,11 +29,11 @@ class MyUserManager(BaseUserManager):
         birth and password.
         """
         user = self.create_user(
-            username,
-            password=password,
+            username=username,
             email=email,
             date_of_birth=date_of_birth,
         )
+        user.set_password(password)
         user.is_admin = True
         user.save(using=self._db)
         return user
@@ -56,7 +56,7 @@ class MyUser(AbstractBaseUser):
     objects = MyUserManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['date_of_birth']
+    REQUIRED_FIELDS = ['email', 'date_of_birth']
 
     def __str__(self):
         return self.username
