@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from accounts.models import MyUser as User
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from .models import Question, Answer
@@ -22,7 +23,10 @@ def mypage(request):
 @login_required(login_url='/accounts/login/')
 def index(request):
     question_list = Question.objects.order_by('-pub_date')
-    context = {'question_list': question_list}
+    paginator = Paginator(question_list, 10)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
+    context = {'posts': posts}
     return render(request, 'challenges/index.html', context)
 
 @login_required(login_url='/accounts/login/')

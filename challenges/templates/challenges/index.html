@@ -6,8 +6,8 @@
 
 <body class = "masthead bg-primary">
     <div class = "container">
-        {% if question_list %}
-        {% for question in question_list %}
+        {% if posts %}
+        {% for question in posts %}
 
         <h1><a href="{% url 'challenges:detail' question.id %}">{{ question.title }}</a></h1>
         <p class="small text-right"> ~ {{question.due_date}} </p>
@@ -16,6 +16,18 @@
         {% endfor %}
         {% else %}
         <p>No question is available </p>
+        {% endif %}
+
+        {% if posts.has_previous %}
+        <a href="?page=1">first page</a>
+        <a href="?page={{posts.previous_page_number}}">previous page</a>
+        {% endif %}
+        <span>{{posts.number}}</span>
+        <span>/</span>
+        <span>{{posts.paginator.num_pages}}</span>
+        {% if posts.has_next %}
+        <a href="?page={{posts.next_page_number}}">next</a>
+        <a href="?page={{posts.paginator.num_pages}}">last page</a>
         {% endif %}
     </div>
 </body>
