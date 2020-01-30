@@ -7,11 +7,13 @@
     <div class="masthead">
         <div class = "container">
             <h1>{{ question.title }}</h1>
+            <br>
             <h5 class="text-justify">{{ question.question_text }}</h5>
+            <br>
             <blockquote >
                 <p >{{question.description}}</p>
             </blockquote>
-
+            <br>
 
             {% if answer.trial > 0 %}
                  <h2>Your Code</h2>
@@ -43,9 +45,11 @@
             <br>
             <p class="font-italic">due date for this project is {{question.due_date}}</p>
             <br><br>
+            {% if before_due %}
             <form method="GET" action="{% url 'challenges:submitpage' question.id %}">
                 <input type="submit" class="btn btn-primary" value="submit code">
             </form>
+            {% endif %}
         </div>
     </div>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}

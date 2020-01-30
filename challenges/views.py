@@ -36,7 +36,8 @@ def detail(request, question_id):
         user=request.user,
         defaults={'trial': 0,},
     )
-    return render(request, 'challenges/detail.html', {'question': question, 'answer': answer})
+    before_due = timezone.now() < question.due_date
+    return render(request, 'challenges/detail.html', {'question': question, 'answer': answer, 'before_due':before_due})
 
 @login_required(login_url='/accounts/login/')
 def submitpage(request, question_id):

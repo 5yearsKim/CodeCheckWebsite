@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    'polls.apps.PollsConfig',
+    # 'polls.apps.PollsConfig',
     'challenges.apps.ChallengesConfig',
     'accounts.apps.AccountsConfig',
     'notifications.apps.NotificationsConfig',
