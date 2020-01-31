@@ -26,5 +26,5 @@ class UserRegistrationForm(forms.Form):
     date_of_birth = forms.DateField(
         required = True,
         label = 'Date of Birth',
-        widget = forms.SelectDateWidget(),
+        widget = forms.SelectDateWidget(years=range(1970, 2010)),
     )
