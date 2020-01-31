@@ -77,11 +77,12 @@ def submitpage(request, question_id):
             update_score(request)
             return render(request, 'challenges/resultpage.html', context)
     else:
+        before_due = timezone.now() < question.due_date
         if answer.trial == 0:
             form = EditorForm(initial={"answer_code": question.sample_code})
         else:
             form = EditorForm(initial={"answer_code": answer.answer_code})
-        return render(request, 'challenges/submitpage.html', {'question': question, 'answer': answer, "form": form})
+        return render(request, 'challenges/submitpage.html', {'question': question, 'answer': answer, "form": form, "before_due": before_due})
 
 
 @login_required(login_url='/accounts/login/')
