@@ -24,7 +24,7 @@
 
                   {% for ans in m_answer %}
                   <tr>
-                    <td>{{ans.question}}</td>
+                      <td><a href = "{% url 'challenges:detail' ans.question.id%}" style="color:#004040;"> {{ans.question}}</a></td>
                     <td>{{ans.score}}/{{ans.question.max_score}}</td>
                   </tr>
                   {% endfor %}

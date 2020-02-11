@@ -32,10 +32,22 @@ def get_score(answer, t_val, max_score):
         return max_score
     hit, miss = 0, 0
     for i in range(N_ans):
-        if str(answer[i]) == str(t_val[i]):
-            hit += 1
+        if is_number(answer[i]) and is_number(t_val[i]):
+            val = float(answer[i]) / float(t_val[i])
+            if val > 0.98 and val < 1.02:
+                hit += 1
+            else:
+                miss += 1
         else:
-            miss += 1
-    return max_score * (hit /(hit + miss))
+            if str(answer[i]) == str(t_val[i]):
+                hit += 1
+            else:
+                miss += 1
+    return round(max_score * (hit /(hit + miss)), 1)
 
-
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
