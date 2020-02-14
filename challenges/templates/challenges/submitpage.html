@@ -18,7 +18,8 @@
 </head>
 {% if before_due %}
 <body>
-    <div class="methead">
+    <div class="text-center">
+
         <div class="col-md-6 col-lg-4 center">
           <div class="portfolio-item mx-auto">
             <div class=" d-flex justify-content-center">
@@ -27,6 +28,9 @@
 
                 {{form.media}}
                   <form method="POST" class="post-form text-white">
+
+                    <INPUT TYPE=RADIO NAME=dbgmode VALUE="dbg" CHECKED> <label style="font-size: 1.5rem; color: #000066;">Debug Mode</label>
+                    <INPUT TYPE=RADIO NAME=dbgmode VALUE="test"><label style="font-size: 1.5rem; color: #000066;"> Test Mode</label>
                     {% csrf_token %}
                     {{ form.as_p }}
                     <button type="submit" class="save btn btn-primary">Submit</button>

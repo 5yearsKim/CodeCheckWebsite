@@ -1,0 +1,30 @@
+                       List of relations
+ Schema |               Name                |   Type   | Owner 
+--------+-----------------------------------+----------+-------
+ public | accounts_myuser                   | table    | root
+ public | accounts_myuser_id_seq            | sequence | root
+ public | auth_group                        | table    | root
+ public | auth_group_id_seq                 | sequence | root
+ public | auth_group_permissions            | table    | root
+ public | auth_group_permissions_id_seq     | sequence | root
+ public | auth_permission                   | table    | root
+ public | auth_permission_id_seq            | sequence | root
+ public | challenges_answer                 | table    | root
+ public | challenges_answer_id_seq          | sequence | root
+ public | challenges_question               | table    | root
+ public | challenges_question_id_seq        | sequence | root
+ public | django_admin_log                  | table    | root
+ public | django_admin_log_id_seq           | sequence | root
+ public | django_content_type               | table    | root
+ public | django_content_type_id_seq        | sequence | root
+ public | django_migrations                 | table    | root
+ public | django_migrations_id_seq          | sequence | root
+ public | django_session                    | table    | root
+ public | notifications_notification        | table    | root
+ public | notifications_notification_id_seq | sequence | root
+ public | polls_choice                      | table    | root
+ public | polls_choice_id_seq               | sequence | root
+ public | polls_question                    | table    | root
+ public | polls_question_id_seq             | sequence | root
+(25 rows)
+

@@ -1,10 +1,10 @@
 from django import forms
 
 class UserRegistrationForm(forms.Form):
-    username = forms.CharField(
+    student_id = forms.CharField(
         required = True,
-        label = 'Username',
-        max_length = 12
+        label = 'student_id',
+        max_length = 10
     )
     password1 = forms.CharField(
         required = True,
@@ -19,12 +19,8 @@ class UserRegistrationForm(forms.Form):
         widget = forms.PasswordInput()
     )
 
-    email = forms.EmailField(
+    nickname = forms.CharField(
         required = True,
-        label = 'Email',
+        label = 'nickname',
     )
-    date_of_birth = forms.DateField(
-        required = True,
-        label = 'Date of Birth',
-        widget = forms.SelectDateWidget(years=range(1970, 2010)),
-    )
+

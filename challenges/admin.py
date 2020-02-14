@@ -9,8 +9,13 @@ from .utils import check_answer
 class QuestionAdmin(admin.ModelAdmin, DynamicArrayMixin):
     fieldsets = (
         (None, {
-            'fields': ('title', 'question_text', 'description', 'sample_code', 'answer_code',
-                       'test_expression', 'due_date')
+            'fields': ('title', 'question_text', 'description',)
+        }),
+        ("Code", {
+            'fields': ('sample_code', 'answer_code', 'test_expression')
+        }),
+        ("Detail", {
+            'fields': ('max_score', 'due_date')
         }),
     )
     list_display = ['title', 'pub_date', 'due_date', 'test_value']

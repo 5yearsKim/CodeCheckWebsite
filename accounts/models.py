@@ -8,33 +8,29 @@ from django.contrib.auth.hashers import make_password, is_password_usable
 
 
 class MyUserManager(BaseUserManager):
-    def create_user(self, username, email, date_of_birth, password=None):
+    def create_user(self, student_id, nickname, password=None):
         """
-        Creates and saves a User with the username, date of
-        birth and password.
+        Creates and saves a User with the student_id, nickname
         """
-        if not username:
-            raise ValueError('Users must have an username')
+        if not student_id:
+            raise ValueError('Users must have an student_id')
 
         user = self.model(
-            username=username,
-            email=email,
-            date_of_birth=date_of_birth,
+            student_id=student_id,
+            nickname=nickname,
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, date_of_birth, password=None):
+    def create_superuser(self, student_id, nickname, password=None):
         """
-        Creates and saves a superuser with the given username, date of
-        birth and password.
+        Creates and saves a superuser with the given student_id, nickname, password.
         """
         user = self.create_user(
-            username=username,
-            email=email,
-            date_of_birth=date_of_birth,
+            student_id=student_id,
+            nickname=nickname,
         )
         user.set_password(password)
         user.is_admin = True
@@ -43,26 +39,24 @@ class MyUserManager(BaseUserManager):
 
 
 class MyUser(AbstractBaseUser):
-    username = models.CharField(
-        max_length=12,
-        unique=True,
+    student_id = models.CharField(
+        max_length=10,
+        primary_key=True,
     )
-    email = models.EmailField(
-        verbose_name='email address',
-        max_length=255,
+    nickname = models.CharField(
+        max_length=20,
     )
-    date_of_birth = models.DateField()
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     total_score = models.FloatField(default=0.)
 
     objects = MyUserManager()
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'date_of_birth']
+    USERNAME_FIELD = 'student_id'
+    REQUIRED_FIELDS = ['nickname']
 
     def __str__(self):
-        return self.username
+        return self.nickname
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"

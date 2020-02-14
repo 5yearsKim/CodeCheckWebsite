@@ -14,7 +14,7 @@ def basic(request):
 
 @login_required(login_url='/accounts/login/')
 def mypage(request):
-    m_user = get_object_or_404(User, username=request.user)
+    m_user = get_object_or_404(User, student_id=request.user.student_id)
     m_answer = m_user.answer_set.all().order_by('-pub_date')
     q_done = [ans.question.id for ans in m_answer]
     unsubmitted = Question.objects.exclude(id__in=q_done)
@@ -42,7 +42,7 @@ def detail(request, question_id):
 @login_required(login_url='/accounts/login/')
 def submitpage(request, question_id):
     def update_score(request):
-        m_user = get_object_or_404(User, username=request.user)
+        m_user = get_object_or_404(User, student_id=request.user.student_id)
         answer = m_user.answer_set.all()
         m_score = 0
         for ans in answer:
@@ -51,6 +51,7 @@ def submitpage(request, question_id):
         m_user.save()
     question = get_object_or_404(Question, pk=question_id)
     answer = question.answer_set.get(user=request.user)
+    before_due = timezone.now() < question.due_date
     if request.method =="POST":
         form = EditorForm(request.POST, instance=answer)
         answer = form.save(commit=False)
@@ -58,8 +59,9 @@ def submitpage(request, question_id):
         answer.pub_date = timezone.now()
         # answer.save(update_fields=['answer_code', 'trial', 'pub_date'])
         answer.save()
+        mode = request.POST["dbgmode"]
         try:
-            t_val, err_msg, m_stdout = check_answer(answer.answer_code, question.test_expression)
+            t_val, err_msg, m_stdout = check_answer(answer.answer_code, question.test_expression, mode)
         except:
             m_stdout, err_msg = "TimeoutError", "Potential Danger: It takes too much time to run your code!"
             context = {"question": question, "answer": answer, "err_msg": err_msg,
@@ -73,11 +75,13 @@ def submitpage(request, question_id):
             context["error"] = False
             answer.test_value = t_val
             answer.score = get_score(question.test_value, answer.test_value, question.max_score)
+            if not before_due:
+                answer.score = 0.
+                context["m_stdout"] = context["m_stdout"] + "\n TIMEOUT ERROR! You don't get any score!"
             answer.save()
             update_score(request)
             return render(request, 'challenges/resultpage.html', context)
     else:
-        before_due = timezone.now() < question.due_date
         if answer.trial == 0:
             form = EditorForm(initial={"answer_code": question.sample_code})
         else:
@@ -85,30 +89,4 @@ def submitpage(request, question_id):
         return render(request, 'challenges/submitpage.html', {'question': question, 'answer': answer, "form": form, "before_due": before_due})
 
 
-@login_required(login_url='/accounts/login/')
-def processing(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    answer = question.answer_set.get(user=request.user)
 
-
-
-
-#
-#
-# def vote(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     try:
-#         selected_choice = question.choice_set.get(pk=request.POST['choice'])
-#     except (KeyError, Choice.DoesNotExist):
-#         # Redisplay the question voting form.
-#         return render(request, 'polls/detail.html', {
-#             'question': question,
-#             'error_message': "You didn't select a choice.",
-#         })
-#     else:
-#         selected_choice.votes += 1
-#         selected_choice.save()
-#         # Always return an HttpResponseRedirect after successfully dealing
-#         # with POST data. This prevents data from being posted twice if a
-#         # user hits the Back button.
-#         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))

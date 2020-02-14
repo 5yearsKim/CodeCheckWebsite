@@ -12,9 +12,9 @@
         <div class = "row justify-content-center align-items-center" >
             <form class = "form-group input text-white font-weight-bold" method="POST" action="{% url 'accounts:login'%}">
                 {% csrf_token %}
-                Username:
+                Student ID:
                 <br>
-                <input name="username" type="text">
+                <input name="student_id" type="text">
                 <br>
                 Password:
                 <br>

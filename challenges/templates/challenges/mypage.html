@@ -5,9 +5,9 @@
 <body class = "masthead bg-primary">
     <div class = "container">
 
-        <h2 class="text-white text-center">Username: {{user.username}}</h2>
-        <h2 class="text-white text-center">Email: {{user.email}}</h2>
-        <h2 class="text-white text-center">Date of Birth: {{user.date_of_birth}}</h2>
+        <button class =" btn-secondary"  type="button" onclick="location.href='{% url 'accounts:change_password' %}' ">reset password</button>
+        <h2 class="text-white text-center">Student ID: {{user.student_id}}</h2>
+        <h2 class="text-white text-center">Name: {{user.nickname}}</h2>
         <br><br><br>
         {% if m_answer%}
         <div class="mb-3 text-center">
@@ -20,11 +20,11 @@
                     <th>Score</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody class="text-white" >
 
                   {% for ans in m_answer %}
                   <tr>
-                      <td><a href = "{% url 'challenges:detail' ans.question.id%}" style="color:#004040;"> {{ans.question}}</a></td>
+                      <td><a href = "{% url 'challenges:detail' ans.question.id%}" class="text-white"> {{ans.question}}</a></td>
                     <td>{{ans.score}}/{{ans.question.max_score}}</td>
                   </tr>
                   {% endfor %}

@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect
 from .models import MyUser as User
 from .forms import UserRegistrationForm
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
+
 
 def basic(request):
     return render(request, 'accounts/base.html')
@@ -13,23 +18,21 @@ def signup(request):
             return render(request, 'accounts/signup.html', {'form': UserRegistrationForm(),
                                                             'error': 'Please fill in the form correctly'})
         userObj = form.cleaned_data
-        username = userObj['username']
-        email =  userObj['email']
+        student_id = userObj['student_id']
         password1 =  userObj['password1']
         password2 =  userObj['password2']
-        date_of_birth =  userObj['date_of_birth']
+        nickname =  userObj['nickname']
 
         if password1 != password2:
             return render(request, 'accounts/signup.html', {'form': UserRegistrationForm(),
                                                             'error': 'password confirmation doesn\'t match'})
-        if (User.objects.filter(username=username).exists() or User.objects.filter(email=email).exists()):
+        if User.objects.filter(student_id=student_id).exists():
             return render(request, 'accounts/signup.html', {'form': UserRegistrationForm(),
                                                             'error': 'User name or Email already exists'})
         User.objects.create_user(
-            username=username, password=password1,
-            email=email, date_of_birth=date_of_birth
+            student_id=student_id, password=password1, nickname=nickname,
         )
-        user = auth.authenticate(username=username, password=password1)
+        user = auth.authenticate(student_id=student_id, password=password1)
         auth.login(request, user)
         return redirect("/")
 
@@ -38,17 +41,37 @@ def signup(request):
 
 def login(request):
     if request.method == "POST":
-        username = request.POST['username']
+        student_id = request.POST['student_id']
         password = request.POST['password']
-        user = auth.authenticate(request, username=username, password=password)
+        user = auth.authenticate(request, student_id=student_id, password=password)
         if user is not None:
             auth.login(request, user)
             return redirect("/")
         else:
-            return render(request, 'accounts/login.html', {'error':'username or password is incorrect'})
+            return render(request, 'accounts/login.html', {'error':'student_id or password is incorrect'})
     else:
         return render(request, 'accounts/login.html')
+
 
 def logout(request):
     auth.logout(request)
     return redirect("/")
+
+@login_required(login_url='/accounts/login/')
+def change_password(request):
+    error = ""
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return redirect('/')
+        else:
+            error = "please fill in the form correctly"
+
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'accounts/change_password.html', {
+        'form': form, 'error': error
+    })
+
