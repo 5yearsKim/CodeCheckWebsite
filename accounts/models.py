@@ -4,7 +4,7 @@ from django.contrib.auth.models import (
 )
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from django.contrib.auth.hashers import make_password, is_password_usable
+from django.contrib.auth.hashers import make_password, identify_hasher
 
 
 class MyUserManager(BaseUserManager):
@@ -76,5 +76,17 @@ class MyUser(AbstractBaseUser):
 
 @receiver(pre_save, sender=MyUser)
 def password_hashing(instance, **kwargs):
+    a = is_password_usable(instance.password)
     if not is_password_usable(instance.password):
         instance.password = make_password(instance.password)
+
+
+UNUSABLE_PASSWORD_PREFIX = '!'
+def is_password_usable(encoded):
+    if encoded is None or encoded.startswith(UNUSABLE_PASSWORD_PREFIX):
+        return False
+    try:
+        identify_hasher(encoded)
+    except ValueError:
+        return False
+    return True

@@ -4,7 +4,7 @@ import traceback
 import timeout_decorator
 
 @timeout_decorator.timeout(3, use_signals=False)
-def check_answer(answer_code, test_expression, mode):
+def check_answer(answer_code, test_expression, mode='dbg'):
     buf = io.StringIO()
     with redirect_stdout(buf):
         if "rm -rf" in answer_code or "import os" in answer_code or "from os" in answer_code:

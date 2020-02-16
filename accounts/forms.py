@@ -24,3 +24,5 @@ class UserRegistrationForm(forms.Form):
         label = 'nickname',
     )
 
+
+

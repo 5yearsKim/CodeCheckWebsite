@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
+from import_export.admin import ImportExportModelAdmin
 from .models import MyUser
 
 
@@ -52,7 +53,7 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(BaseUserAdmin, ImportExportModelAdmin):
     # The forms to add and change user instances
     form = UserChangeForm
     add_form = UserCreationForm
@@ -77,6 +78,9 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('student_id', 'nickname')
     ordering = ('student_id',)
     filter_horizontal = ()
+
+
+
 
 
 # Now register the new UserAdmin...

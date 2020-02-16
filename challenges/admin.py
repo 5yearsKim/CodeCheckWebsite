@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django_better_admin_arrayfield.admin.mixins import DynamicArrayMixin
 from django.shortcuts import redirect, render
+from import_export.admin import ImportExportModelAdmin
 
 from .models import Question, Answer
 from .utils import check_answer
@@ -47,9 +48,9 @@ class QuestionAdmin(admin.ModelAdmin, DynamicArrayMixin):
         return render(request, "admin/upload_result.html", context)
 
 
-class AnswerAdmin(admin.ModelAdmin):
+class AnswerAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ["user", "question", "score"]
-    list_filter = ["user", "question"]
+    list_filter = ["question"]
     ordering = ["question", "user"]
 
 
