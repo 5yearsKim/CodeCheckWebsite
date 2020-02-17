@@ -19,16 +19,16 @@ This website not only helps students to code on websie without any program insta
 
 ## demo UI
 - main page    
-![main](/git_imges/main.png)
+![main](/git_imgs/main.png)
 
 - questions list    
-![questions](/git_imges/question_list.png)
+![questions](/git_imgs/question_list.png)
 
 - write code    
-![write](/git_imges/write_code.png)
+![write](/git_imgs/write_code.png)
 
 - result page    
-![result](/git_imges/result.png)
+![result](/git_imgs/result.png)
 
 - mypage    
-![mypage](/git_imges/mypage.png)
+![mypage](/git_imgs/mypage.png)
