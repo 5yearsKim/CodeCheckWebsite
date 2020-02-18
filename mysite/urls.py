@@ -25,4 +25,5 @@ urlpatterns = [
     path('challenges/', include('challenges.urls')),
     path('notifications/', include('notifications.urls')),
     path('admin/', admin.site.urls),
+    path('markdownx/', include('markdownx.urls')),
 ]

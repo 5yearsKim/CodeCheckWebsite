@@ -1,7 +1,7 @@
 {% extends 'challenges/base.html' %}
 
 {% block content %}
-
+{% load challenges_tags %}
 
 <body>
     <div class="masthead">
@@ -11,7 +11,7 @@
             <h5 class="text-justify">{{ question.question_text }}</h5>
             <br>
             <blockquote >
-                <p >{{question.description}}</p>
+                <p >{{question.description|show_markdown|safe}}</p>
             </blockquote>
             <br>
 

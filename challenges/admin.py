@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django_better_admin_arrayfield.admin.mixins import DynamicArrayMixin
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from import_export.admin import ImportExportModelAdmin
+from markdownx.widgets import AdminMarkdownxWidget
 
-from .models import Question, Answer
+from .models import Question, Answer, DescriptionField
 from .utils import check_answer
 
 
@@ -23,7 +24,10 @@ class QuestionAdmin(admin.ModelAdmin, DynamicArrayMixin):
     # list_display_links = ['id', 'title']
     # list_editable = ['author']
     # list_per_page = 3
-    list_filter = ['title', 'pub_date', 'due_date']
+    list_filter = ['title']
+    formfield_overrides = {
+        DescriptionField: {'widget': AdminMarkdownxWidget},
+    }
 
     def response_add(self, request, obj):
         answer, err_msg, m_stdout = check_answer(obj.answer_code, obj.test_expression)

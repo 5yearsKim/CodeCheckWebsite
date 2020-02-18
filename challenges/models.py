@@ -1,12 +1,14 @@
 from django.db import models
 from django_better_admin_arrayfield.models.fields import ArrayField
 from django.conf import settings
-from django.utils import timezone
+
+class DescriptionField(models.TextField):
+    pass
 
 class Question(models.Model):
     title = models.CharField(max_length=100)
     question_text = models.CharField(max_length=200)
-    description = models.TextField()
+    description = DescriptionField()
     sample_code = models.TextField()
     answer_code = models.TextField()
     test_expression = ArrayField(models.CharField(max_length=30, blank=True), null=True, default=list)
@@ -35,4 +37,6 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.question.title + "_" + self.user.username
+
+
 
