@@ -76,7 +76,6 @@ class MyUser(AbstractBaseUser):
 
 @receiver(pre_save, sender=MyUser)
 def password_hashing(instance, **kwargs):
-    a = is_password_usable(instance.password)
     if not is_password_usable(instance.password):
         instance.password = make_password(instance.password)
 

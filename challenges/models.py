@@ -36,7 +36,7 @@ class Answer(models.Model):
 
 
     def __str__(self):
-        return self.question.title + "_" + self.user.username
+        return self.question.title + "_" + self.user.student_id
 
 
 
