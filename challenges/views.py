@@ -15,14 +15,23 @@ def basic(request):
 @login_required(login_url='/accounts/login/')
 def mypage(request):
     m_user = get_object_or_404(User, student_id=request.user.student_id)
-    m_answer = m_user.answer_set.all().order_by('-pub_date')
+    m_answer = m_user.answer_set.all().order_by('question__type','-pub_date')
     q_done = [ans.question.id for ans in m_answer]
     unsubmitted = Question.objects.exclude(id__in=q_done)
     return render(request, "challenges/mypage.html", {"unsubmitted": unsubmitted, "m_user": m_user, "m_answer": m_answer})
 
 @login_required(login_url='/accounts/login/')
-def index(request):
-    question_list = Question.objects.order_by('-pub_date')
+def quiz_index(request):
+    question_list = Question.objects.filter(type='q').order_by('-pub_date')
+    paginator = Paginator(question_list, 10)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
+    context = {'posts': posts}
+    return render(request, 'challenges/index.html', context)
+
+@login_required(login_url='/accounts/login/')
+def challenge_index(request):
+    question_list = Question.objects.filter(type='a').order_by('-pub_date')
     paginator = Paginator(question_list, 10)
     page = request.GET.get('page')
     posts = paginator.get_page(page)

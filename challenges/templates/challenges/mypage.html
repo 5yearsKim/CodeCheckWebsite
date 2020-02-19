@@ -9,14 +9,13 @@
         <h2 class="text-white text-center">Student ID: {{user.student_id}}</h2>
         <h2 class="text-white text-center">Name: {{user.nickname}}</h2>
         <br><br><br>
-        {% if m_answer%}
         <div class="mb-3 text-center">
-            <h4>Your Challenge Score</h4>
+            <h4>Your Score</h4>
             <div class="container">
               <table class="table table-hover table-sm">
                 <thead class="thead-dark">
                   <tr>
-                    <th>Challenge</th>
+                    <th>Mission</th>
                     <th>Score</th>
                   </tr>
                 </thead>
@@ -24,29 +23,45 @@
 
                   {% for ans in m_answer %}
                   <tr>
-                      <td><a href = "{% url 'challenges:detail' ans.question.id%}" class="text-white"> {{ans.question}}</a></td>
-                    <td>{{ans.score}}/{{ans.question.max_score}}</td>
+                      {% if ans.question.type == 'q'%}
+                      <td><a href = "{% url 'challenges:detail' ans.question.id%}" class="text-primary h5 font-weight-bold "> {{ans.question}}</a></td>
+                      <td>{{ans.score}}/{{ans.question.max_score}}</td>
+                      {% else %}
+                      <td><a href = "{% url 'challenges:detail' ans.question.id%}" class="text-secondary h5 font-weight-bold "> {{ans.question}}</a></td>
+                      <td>{{ans.score}}/{{ans.question.max_score}}</td>
+                      {% endif %}
                   </tr>
                   {% endfor %}
                 </tbody>
               </table>
             </div>
+            <br><br>
+
+
             {% if unsubmitted %}
-            <p>You haven't submitted following challenges</p>
-            {% for q in unsubmitted %}
-            <ul class="list-group">
-                <li><a href = "{% url 'challenges:detail' q.id %}" class="list-group-item active">{{q}}</a></li>
-            </ul>
-            {% endfor %}
+            <h5>You haven't submitted following Challenges or Quizzes</h5>
+
+            <table class="table table-hover table-sm">
+                <tbody class="text-white" >
+                  {% for q in unsubmitted %}
+                  <tr>
+                      {% if q.type == 'q'%}
+                      <td><a href = "{% url 'challenges:detail' q.id%}" class="text-primary h5 font-weight-bold "> {{q}}</a></td>
+                      {% else %}
+                      <td><a href = "{% url 'challenges:detail' q.id%}" class="text-secondary h5 font-weight-bold "> {{q}}</a></td>
+                      {% endif %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+
 
             {% else%}
-            <p class="text-success text-wrap">You Submitted All The Challenges!</p>
+            <h5 class="text-success text-wrap">You Submitted All The Challenges and Quizzes!</h5>
             {% endif%}
-            <p>total score: {{ m_user.total_score }}</p>
+            <br>
+            <h4>total score: {{ m_user.total_score }}</h4>
         </div>
-        {% else %}
-        <p>No Answer registered</p>
-        {% endif%}
     </div>
 </body>
 

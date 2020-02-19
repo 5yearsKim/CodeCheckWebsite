@@ -13,3 +13,11 @@ class EditorForm(forms.ModelForm):
 
 class EditorForm2(forms.Form):
     text = forms.CharField(widget=AceWidget(mode='python', theme='twilight'))
+
+class QuestionTypeForm(forms.ModelForm):
+    MY_CHOICES = (
+        ('q', 'quiz'),
+        ('c', 'challenge'),
+    )
+
+    type = forms.ChoiceField(choices=MY_CHOICES)

@@ -6,6 +6,7 @@ from markdownx.widgets import AdminMarkdownxWidget
 
 from .models import Question, Answer, DescriptionField
 from .utils import check_answer
+from .forms import QuestionTypeForm
 
 
 class QuestionAdmin(admin.ModelAdmin, DynamicArrayMixin):
@@ -17,10 +18,10 @@ class QuestionAdmin(admin.ModelAdmin, DynamicArrayMixin):
             'fields': ('sample_code', 'answer_code', 'test_expression')
         }),
         ("Detail", {
-            'fields': ('max_score', 'due_date')
+            'fields': ('type', 'max_score', 'due_date')
         }),
     )
-    list_display = ['title', 'pub_date', 'due_date', 'test_value']
+    list_display = ['title', 'type', 'pub_date', 'due_date', 'test_value']
     # list_display_links = ['id', 'title']
     # list_editable = ['author']
     # list_per_page = 3
@@ -28,6 +29,7 @@ class QuestionAdmin(admin.ModelAdmin, DynamicArrayMixin):
     formfield_overrides = {
         DescriptionField: {'widget': AdminMarkdownxWidget},
     }
+    form = QuestionTypeForm
 
     def response_add(self, request, obj):
         answer, err_msg, m_stdout = check_answer(obj.answer_code, obj.test_expression)

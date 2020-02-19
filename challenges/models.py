@@ -6,6 +6,7 @@ class DescriptionField(models.TextField):
     pass
 
 class Question(models.Model):
+    type = models.CharField(max_length=1, default='c')
     title = models.CharField(max_length=100)
     question_text = models.CharField(max_length=200)
     description = DescriptionField()

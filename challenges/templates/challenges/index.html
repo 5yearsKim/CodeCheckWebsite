@@ -8,8 +8,11 @@
     <div class = "container">
         {% if posts %}
         {% for question in posts %}
-
+        {% if question.type == 'q' %}
         <h1><a href="{% url 'challenges:detail' question.id %}">{{ question.title }}</a></h1>
+        {% else %}
+        <h1><a href="{% url 'challenges:detail' question.id %}" class="text-secondary">{{ question.title }}</a></h1>
+        {% endif%}
         <p class="small text-right"> ~ {{question.due_date}} </p>
         <span>{{question.question_text}}</span>
         <hr/>
