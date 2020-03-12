@@ -18,7 +18,7 @@ class QuestionAdmin(admin.ModelAdmin, DynamicArrayMixin):
             'fields': ('sample_code', 'answer_code', 'test_expression')
         }),
         ("Detail", {
-            'fields': ('type', 'max_score', 'due_date')
+            'fields': ('type', 'max_score', 'pub_date', 'due_date')
         }),
     )
     list_display = ['title', 'type', 'pub_date', 'due_date', 'test_value']

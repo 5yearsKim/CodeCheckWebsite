@@ -15,7 +15,7 @@ class Question(models.Model):
     test_expression = ArrayField(models.CharField(max_length=30, blank=True), null=True, default=list)
     test_value = ArrayField(models.CharField(max_length=30, blank=True), null=True, default=list)
     max_score = models.FloatField(default=100.)
-    pub_date = models.DateTimeField('date published', auto_now_add=True)
+    pub_date = models.DateTimeField('date published')
     due_date = models.DateTimeField('due date')
     # sample_file = models.FileField(null=True)
 

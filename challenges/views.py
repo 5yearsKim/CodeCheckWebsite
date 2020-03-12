@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from accounts.models import MyUser as User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from .models import Question, Answer
@@ -22,7 +23,7 @@ def mypage(request):
 
 @login_required(login_url='/accounts/login/')
 def quiz_index(request):
-    question_list = Question.objects.filter(type='q').order_by('-pub_date')
+    question_list = Question.objects.filter(type='q').exclude(pub_date__gte=timezone.now()).order_by('-pub_date')
     paginator = Paginator(question_list, 10)
     page = request.GET.get('page')
     posts = paginator.get_page(page)
@@ -31,7 +32,7 @@ def quiz_index(request):
 
 @login_required(login_url='/accounts/login/')
 def challenge_index(request):
-    question_list = Question.objects.filter(type='a').order_by('-pub_date')
+    question_list = Question.objects.filter(type='a').exclude(pub_date__gte=timezone.now()).order_by('-pub_date')
     paginator = Paginator(question_list, 10)
     page = request.GET.get('page')
     posts = paginator.get_page(page)
@@ -41,6 +42,8 @@ def challenge_index(request):
 @login_required(login_url='/accounts/login/')
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
+    if question.pub_date >= timezone.now():
+        raise Http404("Question not uploaded")
     answer, created = question.answer_set.get_or_create(
         user=request.user,
         defaults={'trial': 0,},
@@ -60,6 +63,8 @@ def submitpage(request, question_id):
         m_user.save()
     question = get_object_or_404(Question, pk=question_id)
     answer = question.answer_set.get(user=request.user)
+    if question.pub_date >= timezone.now():
+        raise Http404("Question not uploaded")
     before_due = timezone.now() < question.due_date
     if request.method =="POST":
         form = EditorForm(request.POST, instance=answer)
