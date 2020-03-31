@@ -29,7 +29,6 @@
             <div class=" d-flex justify-content-center">
               <div class=" text-center">
                 <p style="font-size:1.5rem">trial : {{answer.trial}}</p>
-
                 {{form.media}}
                   <form method="POST" class="post-form text-white">
 
@@ -37,7 +36,8 @@
                     <INPUT TYPE=RADIO NAME=dbgmode VALUE="test"><label style="font-size: 1.5rem; color: #000066;"> Test Mode</label>
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="save btn btn-primary">Submit</button>
+                    <button type="submit" class="save d-inline btn btn-primary">Submit</button>
+                    <button type="button" class="save d-inline btn btn-secondary" onclick="location.href='{% url 'challenges:reset_submitpage' question_id=question.id %}' "> reset</button>
                   </form>
               </div>
             </div>

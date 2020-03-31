@@ -1,12 +1,13 @@
 from django.contrib import admin
 from django_better_admin_arrayfield.admin.mixins import DynamicArrayMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from import_export.admin import ImportExportModelAdmin
 from markdownx.widgets import AdminMarkdownxWidget
 
 from .models import Question, Answer, DescriptionField
 from .utils import check_answer
 from .forms import QuestionTypeForm
+from accounts.models import MyUser as User
 
 
 class QuestionAdmin(admin.ModelAdmin, DynamicArrayMixin):
@@ -53,6 +54,18 @@ class QuestionAdmin(admin.ModelAdmin, DynamicArrayMixin):
         obj.save()
         return render(request, "admin/upload_result.html", context)
 
+    def response_delete(self, request, obj_display, obj):
+        def update_score(m_user):
+            answer = m_user.answer_set.all()
+            m_score = 0
+            for ans in answer:
+                m_score += ans.score
+            m_user.total_score = m_score
+            m_user.save()
+        users = User.objects.all()
+        for user in users:
+            update_score(user)
+        return redirect('/admin')
 
 class AnswerAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ["user", "question", "score"]

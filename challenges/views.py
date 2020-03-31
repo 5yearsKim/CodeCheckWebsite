@@ -18,7 +18,7 @@ def mypage(request):
     m_user = get_object_or_404(User, student_id=request.user.student_id)
     m_answer = m_user.answer_set.all().order_by('question__type','-pub_date')
     q_done = [ans.question.id for ans in m_answer]
-    unsubmitted = Question.objects.exclude(id__in=q_done)
+    unsubmitted = Question.objects.exclude(id__in=q_done).exclude(pub_date__gte=timezone.now())
     return render(request, "challenges/mypage.html", {"unsubmitted": unsubmitted, "m_user": m_user, "m_answer": m_answer})
 
 @login_required(login_url='/accounts/login/')
@@ -52,7 +52,7 @@ def detail(request, question_id):
     return render(request, 'challenges/detail.html', {'question': question, 'answer': answer, 'before_due':before_due})
 
 @login_required(login_url='/accounts/login/')
-def submitpage(request, question_id):
+def submitpage(request, question_id, is_reset=False):
     def update_score(request):
         m_user = get_object_or_404(User, student_id=request.user.student_id)
         answer = m_user.answer_set.all()
@@ -96,11 +96,15 @@ def submitpage(request, question_id):
             update_score(request)
             return render(request, 'challenges/resultpage.html', context)
     else:
-        if answer.trial == 0:
+        if answer.trial == 0 or is_reset:
             form = EditorForm(initial={"answer_code": question.sample_code})
+            print("HIHI")
         else:
             form = EditorForm(initial={"answer_code": answer.answer_code})
+            print("lose")
         return render(request, 'challenges/submitpage.html', {'question': question, 'answer': answer, "form": form, "before_due": before_due})
 
 
-
+@login_required(login_url='/accounts/login/')
+def reset_submitpage(request, question_id):
+    return submitpage(request, question_id, is_reset=True)

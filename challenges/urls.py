@@ -10,4 +10,5 @@ urlpatterns = [
     path('mypage/', views.mypage, name='mypage'),
     path('<int:question_id>/', views.detail, name='detail'),
     path('<int:question_id>/submitpage', views.submitpage, name='submitpage'),
+    path('<int:question_id>/reset_submitpage', views.reset_submitpage, name='reset_submitpage'),
 ]

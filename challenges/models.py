@@ -13,7 +13,7 @@ class Question(models.Model):
     sample_code = models.TextField()
     answer_code = models.TextField()
     test_expression = ArrayField(models.CharField(max_length=30, blank=True), null=True, default=list)
-    test_value = ArrayField(models.CharField(max_length=30, blank=True), null=True, default=list)
+    test_value = ArrayField(models.CharField(max_length=200, blank=True), null=True, default=list)
     max_score = models.FloatField(default=100.)
     pub_date = models.DateTimeField('date published')
     due_date = models.DateTimeField('due date')
@@ -31,7 +31,7 @@ class Answer(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     trial = models.PositiveIntegerField(default=0)
     answer_code = models.TextField(blank=True)
-    test_value = ArrayField(models.CharField(max_length=30, blank=True), null=True, default=list)
+    test_value = ArrayField(models.CharField(max_length=200, blank=True), null=True, default=list)
     score = models.FloatField(default=0)
     pub_date = models.DateTimeField('date updated', auto_now_add=True)
 

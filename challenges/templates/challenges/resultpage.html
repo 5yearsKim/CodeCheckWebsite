@@ -38,7 +38,7 @@
                 {% pygment %}
 
                 <pre lang="python">
-                    {{answer.answer_code}}
+                    {{answer.answer_code|safe}}
                 </pre>
                 {% endpygment %}
             </div>
@@ -56,7 +56,7 @@
                 <br><br>
                 <p>Error Traceback:</p>
                 <br>
-                <li>{{ err_msg }}</li>
+                <li>{{ err_msg|safe }}</li>
             </div>
             {% else %}
                 <p>Your test result is as follow</p>

@@ -6,9 +6,9 @@
 <body>
     <div class="masthead">
         <div class = "container">
-            <h1>{{ question.title }}</h1>
+            <h1>{{ question.title|safe }}</h1>
             <br>
-            <h5 class="text-justify">{{ question.question_text }}</h5>
+            <h5 class="text-justify">{{ question.question_text|safe }}</h5>
             <br>
             <blockquote >
                 <p >{{question.description|show_markdown|safe}}</p>
@@ -23,7 +23,7 @@
                     {% pygment %}
 
                     <pre lang="python">
-                        {{answer.answer_code}}
+                        {{answer.answer_code|safe|escape }}
                     </pre>
                     {% endpygment %}
                 </div>
@@ -36,7 +36,7 @@
                     {% pygment %}
 
                     <pre lang="python">
-                        {{question.sample_code}}
+                        {{question.sample_code|safe|escape}}
                     </pre>
                     {% endpygment %}
                 </div>
